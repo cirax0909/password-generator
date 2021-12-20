@@ -1,8 +1,20 @@
 from tkinter import *
+from tkinter import messagebox
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
-
+def insert():
+    if len(web_input.get()) <= 0 or len(pass_input.get()) <= 0:
+        messagebox.showwarning(title="Error", message="Please fill all in the information")
+    else:
+        is_ok = messagebox.askyesno(title=web_input.get(), message=f"These are detail entered:\nEmail: "
+                                                               f"{mail_input.get()}\nPassword: {pass_input.get()}")
+        if is_ok:
+            file = open("info.txt", "a")
+            file.write(f"Website: {web_input.get()}\nEmail/User name: {mail_input.get()}\nPassword: {pass_input.get()}\n\n")
+            file.close()
+            web_input.delete(0, END)
+            pass_input.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Pass Word Generator")
@@ -28,6 +40,7 @@ username.grid(column=0, row=2)
 
 #text field for email
 mail_input = Entry(width=56)
+mail_input.insert(0, "tich@gmail.com")
 mail_input.grid(column=1, row=2, columnspan=2)
 
 #password
@@ -43,6 +56,6 @@ generation_button = Button(text="Generate Password")
 generation_button.grid(column=2, row=3)
 
 #add button
-add_button = Button(text="Add", width=47)
+add_button = Button(text="Add", width=47, command=insert)
 add_button.grid(column=1, row=4, columnspan=2)
 window.mainloop()
