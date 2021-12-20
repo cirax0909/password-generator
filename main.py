@@ -1,21 +1,52 @@
 from tkinter import *
 from tkinter import messagebox
+import random
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
+
+def generation():
+    pass_input.delete(0, END)
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+               'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+               'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    password_letters = [random.choice(letters) for _ in range(nr_letters)]
+    password_symbols = [random.choice(symbols) for _ in range(nr_symbols)]
+    password_numbers = [random.choice(numbers) for _ in range(nr_numbers)]
+
+    password_list = password_numbers + password_symbols + password_letters
+
+    random.shuffle(password_list)
+
+    password = "".join(password_list)
+
+    pass_input.insert(0, f"{password}")
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+
+
 def insert():
     if len(web_input.get()) <= 0 or len(pass_input.get()) <= 0:
         messagebox.showwarning(title="Error", message="Please fill all in the information")
     else:
-        is_ok = messagebox.askyesno(title=web_input.get(), message=f"These are detail entered:\nEmail: "
-                                                               f"{mail_input.get()}\nPassword: {pass_input.get()}")
+        is_ok = messagebox.askyesno(title=web_input.get(), message=f"These are detail entered:\n"
+                                                                   f"Email:{mail_input.get()}\nPassword: "
+                                                                   f"{pass_input.get()}")
         if is_ok:
             file = open("info.txt", "a")
-            file.write(f"Website: {web_input.get()}\nEmail/User name: {mail_input.get()}\nPassword: {pass_input.get()}\n\n")
+            file.write(f"Website: {web_input.get()}\nEmail/User name: {mail_input.get()}\nPassword: "
+                       f"{pass_input.get()}\n\n")
             file.close()
             web_input.delete(0, END)
             pass_input.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
+
+
 window = Tk()
 window.title("Pass Word Generator")
 window.config(padx=50, pady=50)
@@ -52,7 +83,7 @@ pass_input = Entry(width=37)
 pass_input.grid(column=1, row=3)
 
 #generation button
-generation_button = Button(text="Generate Password")
+generation_button = Button(text="Generate Password", command=generation)
 generation_button.grid(column=2, row=3)
 
 #add button
