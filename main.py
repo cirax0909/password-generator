@@ -30,6 +30,23 @@ def generation():
 
     pass_input.insert(0, f"{password}")
     pyperclip.copy(password)
+# ---------------------------- SEARCH WEBSITE ------------------------------- #
+
+
+def search():
+    website = web_input.get()
+    try:
+        with open("data.json", "r") as file_data:
+            data = json.load(file_data)
+    except FileNotFoundError:
+        messagebox.showerror(title="Message", message="File is not found")
+    else:
+        if website in data:
+            input_email = data[website]['email']
+            input_password = data[website]['password']
+            messagebox.showinfo(title=website, message=f"Email: {input_email}\nPassword: {input_password}")
+        else:
+            messagebox.showerror(title="Message", message="Website is not found")
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -73,8 +90,8 @@ web_label = Label(text="Website: ")
 web_label.grid(column=0, row=1)
 
 #text field for website
-web_input = Entry(width=56)
-web_input.grid(column=1, row=1, columnspan=2)
+web_input = Entry(width=37)
+web_input.grid(column=1, row=1)
 
 #Email
 username = Label(text="Email/User Name: ")
@@ -100,4 +117,8 @@ generation_button.grid(column=2, row=3)
 #add button
 add_button = Button(text="Add", width=47, command=insert)
 add_button.grid(column=1, row=4, columnspan=2)
+
+#search button
+search_button = Button(text="Search", width=15, command=search)
+search_button.grid(column=2, row=1)
 window.mainloop()
